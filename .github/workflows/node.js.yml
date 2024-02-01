@@ -57,8 +57,6 @@ jobs:
           script: |
             cd /home/ubuntu/.ssh/bala116
             ls -l
-            pm2 start app.js
-            pm2 list
-            pm2 logs
+          
         env:
           KEY: ${{ secrets.KEY }}
