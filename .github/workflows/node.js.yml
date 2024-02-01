@@ -59,3 +59,11 @@ jobs:
             ls -l
         env:
            KEY: ${{ secrets.KEY }}
+
+      - name: Install PM2
+        run: npm install pm2 -g
+        if: success()
+
+      - name: Start Node.js Application with PM2
+        run: pm2 start /home/ubuntu/.ssh/bala116/app.js
+        if: success()
