@@ -60,9 +60,13 @@ jobs:
         env:
            KEY: ${{ secrets.KEY }}
 
+      - name: List Contents of Home Directory
+        run: ls -l /home/ubuntu
+        if: success()
+
       - name: Start Node.js Application with PM2
         run: |
-          cd /home/ubuntu/.ssh/bala116
+          cd /path/to/your/node/app  # Update this with the correct path
           pm2 start App.js
         if: success()
 
