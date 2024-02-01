@@ -32,7 +32,7 @@ jobs:
         if: success()
 
       - name: Build script
-        run:  CI=false npm run build
+        run: CI=false npm run build
         if: success()
 
       - name: Remove existing node_modules directory
@@ -57,10 +57,8 @@ jobs:
           script: |
             cd /home/ubuntu/.ssh/bala116
             ls -l
-          
+            pm2 start app.js
+            pm2 list
+            pm2 logs
         env:
-           KEY: ${{ secrets.KEY }}
-
-      
-
-      
+          KEY: ${{ secrets.KEY }}
