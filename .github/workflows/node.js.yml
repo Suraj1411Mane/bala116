@@ -57,6 +57,7 @@ jobs:
           script: |
             cd /home/ubuntu/.ssh/bala116
             ls -l
+            pm2 list
         env:
            KEY: ${{ secrets.KEY }}
 
