@@ -1,0 +1,61 @@
+name: Deploy and Test
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy_and_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.x
+
+      - name: Install nvm
+        run: |
+          /usr/bin/curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+
+      - name: Clone Git repository for deployment and development
+        run: |
+          git clone https://github.com/b1238155/bala116.git
+        if: success()
+
+      - name: Install dependencies
+        run: npm install
+        if: success()
+
+      - name: Build script
+        run:  CI=false npm run build
+        if: success()
+
+      - name: Remove existing node_modules directory
+        run: |
+          rm -rf /home/ubuntu/.ssh/bala116/node_modules
+        if: success() 
+
+      - name: Install Ansible
+        run: sudo apt install ansible
+        if: success()
+
+      - name: Run npm test
+        run: npm test
+        if: success()
+
+      - name: SSH into EC2 instance
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          script: |
+            cd /home/ubuntu/.ssh/bala116
+            ls -l
+        env:
+           KEY: ${{ secrets.KEY }}
